@@ -125,7 +125,7 @@ class JumpUrlHandler implements UrlHandlerInterface
 
         // Deny access to files that match TYPO3_CONF_VARS[SYS][fileDenyPattern] and whose parent directory
         // is typo3conf/ (there could be a backup file in typo3conf/ which does not match against the fileDenyPattern)
-        $absoluteFileName = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath($jumpUrl), false);
+        $absoluteFileName = GeneralUtility::getFileAbsFileName(GeneralUtility::resolveBackPath($jumpUrl));
 
         if (
             !GeneralUtility::isAllowedAbsPath($absoluteFileName)
@@ -187,7 +187,7 @@ class JumpUrlHandler implements UrlHandlerInterface
             && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'])
         ) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['jumpurlRedirectHandler'] as $className) {
-                $hookObject = GeneralUtility::getUserObj($className);
+                $hookObject = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObject, 'jumpurlRedirectHandler')) {
                     $allowRedirect = $hookObject->jumpurlRedirectHandler($jumpUrl, $GLOBALS['TSFE']);
                 }
@@ -221,7 +221,7 @@ class JumpUrlHandler implements UrlHandlerInterface
      */
     protected function readFileAndExit($file, $mimeType)
     {
-        $file->getStorage()->dumpFileContents($file, true, null, $mimeType);
+        $file->getStorage()->streamFile($file,true, null, $mimeType);
         exit;
     }
 

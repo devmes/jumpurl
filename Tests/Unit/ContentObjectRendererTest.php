@@ -75,7 +75,6 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $GLOBALS['TT'] = $this->getMock(TimeTracker::class, ['dummy']);
 
-        $GLOBALS['TYPO3_DB'] = $this->getMock(DatabaseConnection::class, []);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['urlProcessing']['urlProcessors']['jumpurl']['processor'] = JumpUrlProcessor::class;
